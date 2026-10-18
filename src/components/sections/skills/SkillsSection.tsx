@@ -61,9 +61,9 @@ export default function SkillsSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-4">Kemahiran Teknikal</h2>
+        <h2 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-4">Technical Skills</h2>
         <p className="text-zinc-500 max-w-xl mx-auto px-4">
-          Ekosistem teknologi interaktif. Tarik, lepaskan, dan teroka pelbagai instrumen yang mendorong pembangunan projek saya.
+          An interactive technology ecosystem. Drag, drop, and explore the tools that power my projects.
         </p>
       </motion.div>
 

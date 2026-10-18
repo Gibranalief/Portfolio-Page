@@ -8,19 +8,19 @@ const cards = [
   {
     id: "cv-ml",
     title: "Computer Vision & ML",
-    description: "Eksplorasi berterusan terhadap algoritma seperti model Long Short-Term Memory (LSTM), Gated Recurrent Unit (GRU), serta geometri epipolar dalam penglihatan stereo.",
+    description: "Ongoing exploration of algorithms such as Long Short-Term Memory (LSTM) and Gated Recurrent Unit (GRU) models, as well as epipolar geometry in stereo vision.",
     icon: <Bot className="w-8 h-8 text-blue-400" />
   },
   {
     id: "automation",
-    title: "Automasi & Alat Dalaman",
-    description: "Pembangunan skrip automasi pelayar web dan integrasi API (FastAPI, Groq API, Playwright) untuk mengoptimumkan proses dan tugasan harian.",
+    title: "Automation & Internal Tools",
+    description: "Building browser automation scripts and API integrations (FastAPI, Groq API, Playwright) to streamline everyday processes and tasks.",
     icon: <Code className="w-8 h-8 text-purple-400" />
   },
   {
     id: "quantitative",
-    title: "Analisis & Logik Kuantitatif",
-    description: "Aplikasi logik pengaturcaraan ke dalam bidang kewangan, seperti analisis ekuiti dan strategi valuasi kuantitatif dalam pasaran saham (pemerhatian indeks LQ45).",
+    title: "Quantitative Analysis & Logic",
+    description: "Applying programming logic to finance, such as equity analysis and quantitative valuation strategies in the stock market (observing the LQ45 index).",
     icon: <LineChart className="w-8 h-8 text-emerald-400" />
   }
 ];
@@ -35,8 +35,8 @@ export default function InterestCards() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-zinc-100 mb-4">Eksplorasi & Minat</h2>
-        <p className="text-zinc-500 max-w-2xl mx-auto">Kajian berterusan yang merangkumi kecerdasan buatan, proses automasi, dan logik kuantitatif.</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-zinc-100 mb-4">Exploration & Interests</h2>
+        <p className="text-zinc-500 max-w-2xl mx-auto">Ongoing study spanning artificial intelligence, process automation, and quantitative logic.</p>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

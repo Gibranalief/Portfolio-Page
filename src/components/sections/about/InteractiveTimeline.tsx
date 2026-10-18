@@ -18,22 +18,22 @@ export default function InteractiveTimeline() {
   const nodes = [
     {
       id: "full-stack",
-      title: "Kejuruteraan Penuh-Susunan",
-      description: "Pembangunan aplikasi web kompleks dan sistem tempahan dengan ekosistem moden termasuk Next.js, React, Node.js, NestJS, Prisma, dan PostgreSQL.",
+      title: "Full-Stack Engineering",
+      description: "Building complex web applications and booking systems with a modern ecosystem including Next.js, React, Node.js, NestJS, Prisma, and PostgreSQL.",
       icon: <Server className="w-6 h-6 text-blue-400 group-hover:text-blue-300" />,
       hoverEffect: "spring"
     },
     {
       id: "mentorship",
-      title: "Kepimpinan Akademik & Pembimbing",
-      description: "Pengalaman membimbing rakan mahasiswa dalam subjek-subjek teknikal yang mencabar seperti Computer Vision, Natural Language Processing (NLP), Machine Learning, dan Scientific Computing. Menerangkan penyediaan panduan penjelasan langkah demi langkah dan modul pengajaran.",
+      title: "Academic Leadership & Mentorship",
+      description: "Experience mentoring fellow students in challenging technical subjects such as Computer Vision, Natural Language Processing (NLP), Machine Learning, and Scientific Computing, including preparing step-by-step explanatory guides and teaching modules.",
       icon: <BookOpen className="w-6 h-6 text-purple-400 group-hover:text-purple-300" />,
       hoverEffect: "scale"
     },
     {
       id: "communication",
-      title: "Komunikasi & Pendidikan Fleksibel",
-      description: "Pengalaman sebagai tutor peribadi bahasa Mandarin. Menonjolkan kebolehan merangka pelan pengajaran dan skrip yang disesuaikan, membuktikan kemahiran komunikasi (soft skills) yang cemerlang untuk menterjemahkan maklumat kompleks kepada bentuk yang mudah difahami.",
+      title: "Communication & Flexible Teaching",
+      description: "Experience as a private Mandarin tutor, designing tailored lesson plans and scripts. This shows strong communication (soft) skills and the ability to turn complex information into something easy to understand.",
       icon: <MessageCircle className="w-6 h-6 text-emerald-400 group-hover:text-emerald-300" />,
       hoverEffect: "pulse"
     }

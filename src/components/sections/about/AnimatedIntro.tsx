@@ -38,11 +38,11 @@ export default function AnimatedIntro() {
         </h2>
         
         <p className="text-lg md:text-xl text-zinc-300 leading-relaxed mb-6 font-light">
-          Saya adalah seorang <span className="font-semibold text-blue-400">pelajar Sains Komputer dari BINUS University</span> yang mempunyai keghairahan mendalam terhadap kejuruteraan perisian dan kecerdasan buatan.
+          I am a <span className="font-semibold text-blue-400">Computer Science student at BINUS University</span> with a deep passion for software engineering and artificial intelligence.
         </p>
 
         <p className="text-lg md:text-xl text-zinc-400 leading-relaxed font-light">
-          Sentiasa mendalami teknologi terkini, mencipta alat automasi, dan menganalisa algoritma untuk menyelesaikan masalah kompleks secara elegan.
+          Always diving into the latest technology, building automation tools, and analyzing algorithms to solve complex problems elegantly.
         </p>
       </motion.div>
 
