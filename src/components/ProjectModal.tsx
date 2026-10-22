@@ -33,13 +33,16 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-md"
+            className="fixed inset-0 z-[100] bg-black/80"
           />
 
           {/* Modal Container */}
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-2 sm:p-6 md:p-12 pointer-events-none">
             <motion.div
-              layoutId={`project-container-${project.id}`}
+              initial={{ opacity: 0, scale: 0.96, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 16 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
               className="pointer-events-auto relative flex max-h-[90vh] sm:max-h-[85vh] w-full max-w-5xl flex-col overflow-hidden rounded-[2rem] bg-zinc-950 shadow-[0_0_60px_rgba(0,0,0,0.8)] border border-white/10"
             >
               {/* Close Button */}
@@ -55,30 +58,24 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {/* Hero Header */}
                 <div className="relative h-[45vh] min-h-[300px] w-full shrink-0">
-                  <motion.div
-                    layoutId={`project-image-${project.id}`}
-                    className="absolute inset-0 bg-cover bg-center brightness-[0.6]"
-                    style={{
-                      backgroundImage: `url(${project.thumbnailUrl || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2670&auto=format&fit=crop'})`,
-                    }}
+                  <div
+                    className="absolute inset-0 bg-gradient-to-br from-cyan-900/50 via-zinc-900 to-zinc-950 bg-cover bg-center"
+                    style={project.thumbnailUrl ? { backgroundImage: `url(${project.thumbnailUrl})` } : undefined}
                   >
                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
-                  </motion.div>
+                  </div>
                   
                   <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 md:p-12">
                     <div className="mb-4 flex flex-wrap gap-2">
                       {project.tags.map(tag => (
-                        <span key={tag} className="rounded-full border border-cyan-500/30 bg-cyan-900/40 px-3 py-1 font-mono text-xs font-semibold text-cyan-300 backdrop-blur-md">
+                        <span key={tag} className="rounded-full border border-cyan-500/30 bg-cyan-900/40 px-3 py-1 font-mono text-xs font-semibold text-cyan-300">
                           {tag}
                         </span>
                       ))}
                     </div>
-                    <motion.h2 
-                      layoutId={`title-${project.id}`}
-                      className="text-4xl font-black text-white md:text-6xl tracking-tight leading-none"
-                    >
+                    <h2 className="text-4xl font-black text-white md:text-6xl tracking-tight leading-none">
                       {project.title}
-                    </motion.h2>
+                    </h2>
                   </div>
                 </div>
 

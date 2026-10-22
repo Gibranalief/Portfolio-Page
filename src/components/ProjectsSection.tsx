@@ -18,11 +18,17 @@ export default function ProjectsSection() {
     : projectsData.filter(p => p.tags.includes(activeCategory as ProjectTag));
 
   return (
-    <section id="projects" className="relative min-h-screen w-full bg-zinc-950 py-24 px-4 sm:px-8 md:px-16 lg:px-24">
+    <section id="projects" className="relative w-full bg-zinc-950 py-24 px-4 sm:px-8 md:px-16 lg:px-24">
       {/* Background Decorative */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute -top-1/4 left-1/4 h-[500px] w-[500px] rounded-full bg-cyan-900/10 blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-purple-900/10 blur-[100px]" />
+        <div
+          className="absolute -top-1/4 left-1/4 h-[600px] w-[600px]"
+          style={{ background: 'radial-gradient(closest-side, rgba(22,78,99,0.25), transparent)' }}
+        />
+        <div
+          className="absolute bottom-1/4 right-1/4 h-[500px] w-[500px]"
+          style={{ background: 'radial-gradient(closest-side, rgba(88,28,135,0.2), transparent)' }}
+        />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl">
@@ -70,34 +76,27 @@ export default function ProjectsSection() {
           ))}
         </div>
 
-        {/* Bento Grid */}
-        <motion.div 
-          layout
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        {/* Uniform grid: every card is the same size, and an incomplete last row is centered */}
+        <div className="flex flex-wrap justify-center gap-6">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, idx) => (
+            {filteredProjects.map((project) => (
               <motion.div
                 key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
-                // Emulate Bento Grid by making the first item wider on large screens if desired
-                // Since user has 3 items, making 1 large and 2 small creates a perfect Bento!
-                className={`${idx === 0 ? 'sm:col-span-2 lg:col-span-2 lg:row-span-2' : 'sm:col-span-1 lg:col-span-1'} flex`}
+                layout="position"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+                className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
               >
-                <div className="w-full h-full">
-                  <ProjectCard
-                    project={project}
-                    onClick={() => setSelectedProject(project)}
-                  />
-                </div>
+                <ProjectCard
+                  project={project}
+                  onClick={() => setSelectedProject(project)}
+                />
               </motion.div>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </div>
       </div>
 
       {/* Cinematic Modal */}

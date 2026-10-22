@@ -104,7 +104,7 @@ function TimelineNode({ node, isEven }: { node: any, isEven: boolean }) {
         className="absolute left-0 md:left-1/2 ml-[22px] md:-ml-[22px] mt-2 md:mt-0 w-11 h-11 rounded-full bg-zinc-950 border-2 border-zinc-700 flex items-center justify-center z-20 group-hover:border-zinc-500 transition-colors duration-300"
         whileHover={hoverAnimateX}
       >
-        <div className="absolute inset-0 rounded-full bg-zinc-100/5 backdrop-blur-sm" />
+        <div className="absolute inset-0 rounded-full bg-zinc-100/5" />
         <div className="relative z-10">
           {node.icon}
         </div>
@@ -113,7 +113,7 @@ function TimelineNode({ node, isEven }: { node: any, isEven: boolean }) {
       {/* Content wrapper */}
       <div className={`pl-[70px] md:pl-0 w-full md:w-1/2 flex flex-col ${isEven ? 'md:pr-16 md:items-end md:text-right' : 'md:pl-16 md:items-start md:text-left'}`}>
         <h3 className="text-2xl font-bold text-zinc-100 mb-3">{node.title}</h3>
-        <div className="p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800 backdrop-blur-md shadow-xl group-hover:bg-zinc-900/60 transition-all duration-300">
+        <div className="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 shadow-xl group-hover:bg-zinc-900/80 transition-all duration-300">
           <p className="text-zinc-400 text-base leading-relaxed">
             {node.description}
           </p>

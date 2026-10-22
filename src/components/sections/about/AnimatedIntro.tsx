@@ -1,32 +1,39 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import Image from "next/image"; // We will use a placeholder or generic icon if user image is missing.
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useEffect } from "react";
+import Image from "next/image";
 
 export default function AnimatedIntro() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  // Motion values update the DOM directly, so tracking the mouse does not
+  // re-render this component on every mousemove event.
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const glowX = useSpring(mouseX, { damping: 30, stiffness: 50, mass: 2 });
+  const glowY = useSpring(mouseY, { damping: 30, stiffness: 50, mass: 2 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      // Calculate normalized mouse position relative to window center, from -1 to 1
-      const x = (e.clientX / window.innerWidth - 0.5) * 2;
-      const y = (e.clientY / window.innerHeight - 0.5) * 2;
-      setMousePosition({ x, y });
+      // Normalized mouse position relative to window center, scaled to a 20px offset
+      mouseX.set((e.clientX / window.innerWidth - 0.5) * 2 * 20);
+      mouseY.set((e.clientY / window.innerHeight - 0.5) * 2 * 20);
     };
-    
-    window.addEventListener("mousemove", handleMouseMove);
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [mouseX, mouseY]);
 
   return (
     <div className="relative w-full min-h-[70vh] flex flex-col md:flex-row items-center justify-center px-6 md:px-12 py-20 overflow-hidden">
-      
-      {/* Background glow effects */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
+
+      {/* Background glow (radial gradient instead of a huge blur filter, which is far cheaper to paint) */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] h-[400px] pointer-events-none"
+        style={{ background: "radial-gradient(closest-side, rgba(59,130,246,0.14), transparent)" }}
+      />
 
       {/* Text Content */}
-      <motion.div 
+      <motion.div
         className="z-10 flex-[1.2] flex flex-col items-start max-w-2xl"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -36,7 +43,7 @@ export default function AnimatedIntro() {
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-zinc-100 to-zinc-500 mb-6">
           Hello, world.
         </h2>
-        
+
         <p className="text-lg md:text-xl text-zinc-300 leading-relaxed mb-6 font-light">
           I am a <span className="font-semibold text-blue-400">Computer Science student at BINUS University</span> with a deep passion for software engineering and artificial intelligence.
         </p>
@@ -46,8 +53,8 @@ export default function AnimatedIntro() {
         </p>
       </motion.div>
 
-      {/* Floating Profile Picture / Avatar Element */}
-      <motion.div 
+      {/* Floating Profile Picture */}
+      <motion.div
         className="z-10 flex-1 flex justify-center items-center mt-12 md:mt-0 relative"
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -55,18 +62,14 @@ export default function AnimatedIntro() {
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         {/* Glowing border element tracking cursor */}
-        <motion.div 
-          className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-blue-600 via-zinc-800 to-purple-600 blur-md opacity-70"
-          animate={{
-            x: mousePosition.x * 20,
-            y: mousePosition.y * 20,
-          }}
-          transition={{ type: "spring", damping: 30, stiffness: 50, mass: 2 }}
+        <motion.div
+          className="absolute w-64 h-64 md:w-80 md:h-80 rounded-3xl bg-gradient-to-tr from-blue-600 via-zinc-800 to-purple-600 opacity-60"
+          style={{ x: glowX, y: glowY }}
         />
-        
-        {/* Core floating card */}
-        <motion.div 
-          className="relative w-64 h-64 md:w-80 md:h-80 bg-zinc-900/80 backdrop-blur-xl rounded-3xl border border-zinc-800 flex items-center justify-center p-8 overflow-hidden shadow-2xl"
+
+        {/* Photo card */}
+        <motion.div
+          className="relative w-64 h-64 md:w-80 md:h-80 rounded-3xl border border-zinc-700 overflow-hidden shadow-2xl bg-zinc-900"
           animate={{
             y: [0, -15, 0], // Floating up and down slowly
           }}
@@ -76,12 +79,18 @@ export default function AnimatedIntro() {
             ease: "easeInOut"
           }}
         >
-          {/* Inner details of the profile visual representation */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-zinc-950/50" />
-          <div className="relative text-center w-full h-full border border-zinc-700/50 rounded-2xl flex flex-col items-center justify-center bg-zinc-950/50">
-             <span className="text-6xl mb-4">🚀</span>
-             <h3 className="text-xl font-medium text-zinc-200">Software Eng.</h3>
-             <p className="text-sm text-zinc-500 mt-2">BINUS University</p>
+          <Image
+            src="/profile.png"
+            alt="Gibran Alief Irawan"
+            fill
+            sizes="(min-width: 768px) 320px, 256px"
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/70 via-transparent to-transparent" />
+          <div className="absolute bottom-0 left-0 w-full p-5">
+            <h3 className="text-lg font-semibold text-zinc-100">Gibran Alief Irawan</h3>
+            <p className="text-sm text-zinc-400">Computer Science · BINUS University</p>
           </div>
         </motion.div>
 

@@ -114,7 +114,7 @@ function HoverTiltCard({ card }: { card: any }) {
       transition={{ duration: 0.5 }}
     >
       <div 
-        className="absolute inset-0 rounded-3xl bg-zinc-900/50 backdrop-blur-md border border-white/10 p-8 flex flex-col shadow-2xl overflow-hidden"
+        className="absolute inset-0 rounded-3xl bg-zinc-900/80 border border-white/10 p-8 flex flex-col shadow-2xl overflow-hidden"
         style={{ transform: "translateZ(30px)" }} // Push content outwards
       >
         {/* Dynamic glare effect reflecting mouse movement */}

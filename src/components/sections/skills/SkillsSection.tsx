@@ -52,7 +52,10 @@ export default function SkillsSection() {
       ref={containerRef}
     >
       {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-900/10 blur-[150px] rounded-full pointer-events-none" />
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none"
+        style={{ background: "radial-gradient(closest-side, rgba(30,58,138,0.22), transparent)" }}
+      />
 
       {/* Header */}
       <motion.div 
@@ -90,7 +93,7 @@ export default function SkillsSection() {
       </div>
 
       {/* Draggable Badge Constellation */}
-      <motion.div layout className="relative w-full max-w-6xl mx-auto flex-1 px-8">
+      <div className="relative w-full max-w-6xl mx-auto flex-1 px-8">
         <ul className="flex flex-wrap justify-center gap-6 md:gap-8 items-center h-full align-center pt-8">
           <AnimatePresence mode="popLayout">
             {filteredSkills.map((skill, index) => (
@@ -103,7 +106,7 @@ export default function SkillsSection() {
             ))}
           </AnimatePresence>
         </ul>
-      </motion.div>
+      </div>
 
     </section>
   );
@@ -111,14 +114,13 @@ export default function SkillsSection() {
 
 // Sub-component for individual floating badges
 function DraggableBadge({ skill, parentRef, index }: { skill: any, parentRef: React.RefObject<HTMLDivElement | null>, index: number }) {
-  // Generate random animation delays to make floating look natural and un-synchronized
+  // Stagger the CSS float animation so the badges don't move in sync
   const floatDelay = (index % 5) * 0.4;
   const floatDuration = 3 + (index % 3);
-  
+
   return (
     <motion.li
       layout
-      layoutId={skill.id}
       initial={{ opacity: 0, scale: 0.4 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.4, transition: { duration: 0.2 } }}
@@ -144,20 +146,14 @@ function DraggableBadge({ skill, parentRef, index }: { skill: any, parentRef: Re
       }}
     >
       {/* Container that handles the floating animation separate from the drag physics */}
-      <motion.div
-        animate={{ y: [0, -12, 0] }}
-        transition={{
-          duration: floatDuration,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: floatDelay
-        }}
-        className="px-6 py-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 shadow-lg flex items-center justify-center group transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] hover:border-blue-500/50 hover:bg-white/10"
+      <div
+        style={{ animationDuration: `${floatDuration}s`, animationDelay: `${floatDelay}s` }}
+        className="float-y px-6 py-4 rounded-2xl bg-zinc-900 border border-white/10 shadow-lg flex items-center justify-center group transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] hover:border-blue-500/50 hover:bg-zinc-800"
       >
         <span className="text-zinc-200 font-medium whitespace-nowrap group-hover:text-white transition-colors">
           {skill.name}
         </span>
-      </motion.div>
+      </div>
     </motion.li>
   );
 }

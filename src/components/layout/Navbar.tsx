@@ -9,7 +9,7 @@ export default function Navbar() {
   const { setIsOpen } = useTerminalStore();
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-black/40 backdrop-blur-md border-b border-white/10">
+    <header className="fixed top-0 w-full z-50 bg-black/80 border-b border-white/10">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="text-xl font-bold tracking-tighter text-white">
           Gibran<span className="text-blue-500">.dev</span>
@@ -33,12 +33,12 @@ export default function Navbar() {
           </button>
           
           <a
-            href="/resume.pdf"
-            download
+            href="/CV_Gibran_Alief_Irawan.pdf"
+            download="CV_Gibran_Alief_Irawan.pdf"
             className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors"
           >
             <Download size={16} />
-            <span className="hidden md:inline">Resume</span>
+            <span className="hidden md:inline">Download CV</span>
           </a>
         </div>
       </div>
