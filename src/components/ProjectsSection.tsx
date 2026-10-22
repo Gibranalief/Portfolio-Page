@@ -18,27 +18,24 @@ export default function ProjectsSection() {
     : projectsData.filter(p => p.tags.includes(activeCategory as ProjectTag));
 
   return (
-    <section id="projects" className="relative w-full bg-zinc-950 py-24 px-4 sm:px-8 md:px-16 lg:px-24">
-      {/* Background Decorative */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <div
-          className="absolute -top-1/4 left-1/4 h-[600px] w-[600px]"
-          style={{ background: 'radial-gradient(closest-side, rgba(22,78,99,0.25), transparent)' }}
-        />
-        <div
-          className="absolute bottom-1/4 right-1/4 h-[500px] w-[500px]"
-          style={{ background: 'radial-gradient(closest-side, rgba(88,28,135,0.2), transparent)' }}
-        />
-      </div>
-
+    <section id="projects" className="relative w-full border-t border-line bg-bg px-4 py-28 sm:px-8 md:px-16 lg:px-24">
       <div className="relative z-10 mx-auto max-w-7xl">
         {/* Header */}
-        <div className="mb-14 text-center md:text-left">
-          <motion.h2 
+        <div className="mb-12 text-center md:text-left">
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-4 text-4xl font-extrabold text-white md:text-6xl tracking-tight"
+            className="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-subtle"
+          >
+            Selected Work
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.05 }}
+            className="mb-4 text-4xl font-semibold tracking-tight text-fg md:text-5xl"
           >
             Featured Works
           </motion.h2>
@@ -47,28 +44,28 @@ export default function ProjectsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="max-w-2xl text-lg text-gray-400"
+            className="max-w-2xl text-lg text-muted"
           >
             A curated selection of case studies demonstrating advanced web development, AI engineering, and interactive design.
           </motion.p>
         </div>
 
         {/* Filter Pill Tabs */}
-        <div className="mb-14 flex flex-wrap justify-center gap-3 md:justify-start">
+        <div className="mb-12 flex flex-wrap justify-center gap-2 md:justify-start">
           {filterCategories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className="relative rounded-full px-6 py-2.5 text-sm font-semibold transition-colors"
+              className="relative rounded-full px-5 py-2 text-sm font-medium transition-colors"
               data-cursor-magnetic="true"
             >
-              <span className={`relative z-10 ${activeCategory === category ? 'text-black' : 'text-gray-300 hover:text-white'}`}>
+              <span className={`relative z-10 ${activeCategory === category ? 'text-bg' : 'text-muted hover:text-fg'}`}>
                 {category}
               </span>
               {activeCategory === category && (
                 <motion.div
                   layoutId="activeCategoryIndicator"
-                  className="absolute inset-0 z-0 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.5)]"
+                  className="absolute inset-0 z-0 rounded-full bg-fg"
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
                 />
               )}
@@ -99,7 +96,7 @@ export default function ProjectsSection() {
         </div>
       </div>
 
-      {/* Cinematic Modal */}
+      {/* Modal */}
       <ProjectModal
         project={selectedProject}
         onClose={() => setSelectedProject(null)}

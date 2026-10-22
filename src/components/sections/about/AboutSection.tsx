@@ -6,7 +6,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="w-full relative bg-zinc-950 flex flex-col justify-start isolate"
+      className="relative flex w-full flex-col justify-start border-t border-line bg-bg isolate"
     >
       <AnimatedIntro />
       <InteractiveTimeline />

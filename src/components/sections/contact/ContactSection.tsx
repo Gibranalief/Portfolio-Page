@@ -2,11 +2,18 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Copy, Check, Download, MapPin, Code, Camera } from "lucide-react";
+import { ArrowUpRight, Briefcase, Camera, Check, Code, Copy, Download, Mail, MapPin } from "lucide-react";
+import ContactScene from "@/components/3d/ContactScene";
 
 const EMAIL = "gbrnalief@gmail.com";
 
 const socials = [
+  {
+    name: "LinkedIn",
+    handle: "gibran-alief-irawan",
+    href: "https://www.linkedin.com/in/gibran-alief-irawan-394775311/",
+    icon: <Briefcase className="h-5 w-5" />,
+  },
   {
     name: "GitHub",
     handle: "@Gibranalief",
@@ -20,6 +27,11 @@ const socials = [
     icon: <Camera className="h-5 w-5" />,
   },
 ];
+
+const cardClass =
+  "group flex items-center gap-4 rounded-2xl border border-line bg-surface p-5 text-left transition-colors hover:border-fg/25";
+const iconClass =
+  "rounded-xl border border-line bg-surface-2 p-3 text-muted transition-colors group-hover:text-fg";
 
 export default function ContactSection() {
   const [copied, setCopied] = useState(false);
@@ -37,85 +49,93 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative w-full scroll-mt-16 bg-zinc-950 px-4 pb-10 pt-24 sm:px-8 md:px-16 lg:px-24"
+      className="relative w-full overflow-hidden border-t border-line bg-bg px-4 pb-10 pt-28 sm:px-8 md:px-16 lg:px-24"
     >
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/3 h-[600px] w-[800px] max-w-full -translate-x-1/2 -translate-y-1/2"
-        style={{ background: "radial-gradient(closest-side, rgba(59,130,246,0.12), transparent)" }}
-      />
+      <div className="relative mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <p className="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-subtle">Contact</p>
+          <h2 className="mb-5 text-4xl font-semibold tracking-tight text-fg md:text-6xl">
+            Let&apos;s work <span className="text-accent">together.</span>
+          </h2>
+          <p className="mb-8 max-w-md text-lg leading-relaxed text-muted">
+            Open to internships and collaborations in AI and software engineering. Send me a message and I&apos;ll get back to you.
+          </p>
 
-      <motion.div
-        className="relative mx-auto max-w-3xl text-center"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
-        <h2 className="mb-4 text-4xl font-bold text-zinc-100 md:text-5xl">Let&apos;s Work Together</h2>
-        <p className="mx-auto mb-10 max-w-xl text-lg text-zinc-400">
-          Open to internships and collaborations in AI and software engineering. Send me a message and I&apos;ll get back to you.
-        </p>
-
-        {/* Primary actions */}
-        <div className="mb-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a
-            href={`mailto:${EMAIL}`}
-            className="flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3 font-semibold text-white transition-colors hover:bg-blue-700"
-          >
-            <Mail size={18} />
-            {EMAIL}
-          </a>
-          <button
-            onClick={copyEmail}
-            className="flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-800 px-6 py-3 font-semibold text-white transition-colors hover:bg-zinc-700"
-            aria-live="polite"
-          >
-            {copied ? <Check size={18} className="text-emerald-400" /> : <Copy size={18} />}
-            {copied ? "Copied!" : "Copy email"}
-          </button>
-        </div>
-
-        {/* Social + CV cards */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {socials.map((s) => (
+          <div className="mb-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
             <a
-              key={s.name}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 text-left transition-colors hover:border-blue-500/50 hover:bg-zinc-900"
+              href={`mailto:${EMAIL}`}
+              className="flex items-center gap-2 rounded-full bg-fg px-6 py-3 text-sm font-medium text-bg transition-opacity hover:opacity-85"
             >
-              <span className="rounded-xl border border-zinc-700/50 bg-zinc-800 p-3 text-blue-400 transition-colors group-hover:text-blue-300">
-                {s.icon}
-              </span>
-              <span className="flex flex-col">
-                <span className="font-semibold text-zinc-100">{s.name}</span>
-                <span className="text-sm text-zinc-500">{s.handle}</span>
-              </span>
+              <Mail size={16} />
+              {EMAIL}
             </a>
-          ))}
-          <a
-            href="/CV_Gibran_Alief_Irawan.pdf"
-            download="CV_Gibran_Alief_Irawan.pdf"
-            className="group flex items-center gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 text-left transition-colors hover:border-blue-500/50 hover:bg-zinc-900"
+            <button
+              onClick={copyEmail}
+              className="flex items-center gap-2 rounded-full border border-line px-5 py-3 text-sm font-medium text-fg transition-colors hover:bg-surface-2"
+              aria-live="polite"
+            >
+              {copied ? <Check size={16} className="text-accent" /> : <Copy size={16} />}
+              {copied ? "Copied!" : "Copy email"}
+            </button>
+          </div>
+
+          <p className="flex items-center gap-2 text-sm text-subtle">
+            <MapPin size={14} /> Tangerang, Banten, Indonesia
+          </p>
+        </motion.div>
+
+        {/* Interactive 3D object: leans toward the pointer */}
+        <ContactScene className="pointer-events-none h-[280px] w-full md:h-[380px]" />
+      </div>
+
+      {/* Links */}
+      <div className="relative mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {socials.map((s, i) => (
+          <motion.a
+            key={s.name}
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cardClass}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: i * 0.08 }}
           >
-            <span className="rounded-xl border border-zinc-700/50 bg-zinc-800 p-3 text-blue-400 transition-colors group-hover:text-blue-300">
-              <Download className="h-5 w-5" />
+            <span className={iconClass}>{s.icon}</span>
+            <span className="flex min-w-0 flex-1 flex-col">
+              <span className="font-medium text-fg">{s.name}</span>
+              <span className="truncate text-sm text-subtle">{s.handle}</span>
             </span>
-            <span className="flex flex-col">
-              <span className="font-semibold text-zinc-100">Download CV</span>
-              <span className="text-sm text-zinc-500">PDF</span>
-            </span>
-          </a>
-        </div>
+            <ArrowUpRight size={16} className="text-subtle transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </motion.a>
+        ))}
+        <motion.a
+          href="/CV_Gibran_Alief_Irawan.pdf"
+          download="CV_Gibran_Alief_Irawan.pdf"
+          className={cardClass}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: socials.length * 0.08 }}
+        >
+          <span className={iconClass}>
+            <Download className="h-5 w-5" />
+          </span>
+          <span className="flex flex-1 flex-col">
+            <span className="font-medium text-fg">Download CV</span>
+            <span className="text-sm text-subtle">PDF</span>
+          </span>
+        </motion.a>
+      </div>
 
-        <p className="mt-10 flex items-center justify-center gap-2 text-sm text-zinc-500">
-          <MapPin size={14} /> Tangerang, Banten, Indonesia
-        </p>
-      </motion.div>
-
-      <footer className="relative mx-auto mt-20 max-w-3xl border-t border-zinc-800 pt-6 text-center text-xs text-zinc-600">
-        © {new Date().getFullYear()} Gibran Alief Irawan. Built with Next.js, Tailwind CSS, and Framer Motion.
+      <footer className="relative mx-auto mt-20 max-w-6xl border-t border-line pt-6 text-center text-xs text-subtle">
+        © {new Date().getFullYear()} Gibran Alief Irawan. Built with Next.js, Three.js, and Framer Motion.
       </footer>
     </section>
   );

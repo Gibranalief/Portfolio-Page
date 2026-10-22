@@ -1,5 +1,68 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Theme tokens ----------
+   Minimal monochrome palette with a single restrained accent.
+   Components use semantic classes (bg-bg, text-fg, border-line, ...) so the
+   light/dark switch only has to swap these variables. */
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --surface-2: #f3f3f1;
+  --line: rgba(10, 10, 12, 0.1);
+  --fg: #0c0c0d;
+  --muted: #52525b;
+  --subtle: #8a8a93;
+  --accent: #4338ca;
+  --accent-fg: #ffffff;
+}
+
+.dark {
+  --bg: #09090b;
+  --surface: #111114;
+  --surface-2: #19191d;
+  --line: rgba(255, 255, 255, 0.09);
+  --fg: #f4f4f5;
+  --muted: #a1a1aa;
+  --subtle: #71717a;
+  --accent: #a5b4fc;
+  --accent-fg: #09090b;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Leave room for the floating navbar when jumping to a section */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
 /* Floating motion runs on the compositor (transform only) instead of JS, so many
    badges can float at once without costing main-thread time. */
 @keyframes float-y {
@@ -17,8 +80,25 @@
   will-change: transform;
 }
 
+@keyframes scroll-hint {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.scroll-hint {
+  animation: scroll-hint 1.8s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .float-y {
+  html {
+    scroll-behavior: auto;
+  }
+  .float-y,
+  .scroll-hint {
     animation: none;
   }
 }

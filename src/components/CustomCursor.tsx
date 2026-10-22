@@ -73,19 +73,18 @@ export default function CustomCursor() {
       style={{ x: cursorX, y: cursorY }}
     >
       <motion.div
-        className="absolute -left-[10px] -top-[10px] h-5 w-5 rounded-full mix-blend-difference"
+        className={`absolute -left-[10px] -top-[10px] h-5 w-5 rounded-full transition-colors duration-200 ${
+          isHoveringProject ? 'bg-fg' : isHoveringButton ? 'bg-accent/40' : 'bg-accent'
+        }`}
         initial={false}
         animate={{
           // 20px base circle: x2.5 = 50px (buttons), x6 = 120px (project cards)
           scale: isHoveringProject ? 6 : isHoveringButton ? 2.5 : 1,
-          backgroundColor: isHoveringProject
-            ? 'rgba(255, 255, 255, 1)' // White (inverts to black or accent color underneath)
-            : 'rgba(6, 182, 212, 1)', // Neon Cyan
         }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       />
       <motion.span
-        className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold tracking-[0.2em] text-black"
+        className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 text-[10px] font-semibold tracking-[0.2em] text-bg"
         initial={false}
         animate={{ opacity: isHoveringProject ? 1 : 0 }}
         transition={{ duration: 0.2 }}

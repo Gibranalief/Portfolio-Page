@@ -9,19 +9,19 @@ const cards = [
     id: "cv-ml",
     title: "Computer Vision & ML",
     description: "Ongoing exploration of algorithms such as Long Short-Term Memory (LSTM) and Gated Recurrent Unit (GRU) models, as well as epipolar geometry in stereo vision.",
-    icon: <Bot className="w-8 h-8 text-blue-400" />
+    icon: <Bot className="w-8 h-8 text-accent" />
   },
   {
     id: "automation",
     title: "Automation & Internal Tools",
     description: "Building browser automation scripts and API integrations (FastAPI, Groq API, Playwright) to streamline everyday processes and tasks.",
-    icon: <Code className="w-8 h-8 text-purple-400" />
+    icon: <Code className="w-8 h-8 text-accent" />
   },
   {
     id: "quantitative",
     title: "Quantitative Analysis & Logic",
     description: "Applying programming logic to finance, such as equity analysis and quantitative valuation strategies in the stock market (observing the LQ45 index).",
-    icon: <LineChart className="w-8 h-8 text-emerald-400" />
+    icon: <LineChart className="w-8 h-8 text-accent" />
   }
 ];
 
@@ -35,8 +35,8 @@ export default function InterestCards() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-zinc-100 mb-4">Exploration & Interests</h2>
-        <p className="text-zinc-500 max-w-2xl mx-auto">Ongoing study spanning artificial intelligence, process automation, and quantitative logic.</p>
+        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-fg mb-4">Exploration & Interests</h2>
+        <p className="text-muted max-w-2xl mx-auto">Ongoing study spanning artificial intelligence, process automation, and quantitative logic.</p>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -114,12 +114,12 @@ function HoverTiltCard({ card }: { card: any }) {
       transition={{ duration: 0.5 }}
     >
       <div 
-        className="absolute inset-0 rounded-3xl bg-zinc-900/80 border border-white/10 p-8 flex flex-col shadow-2xl overflow-hidden"
+        className="absolute inset-0 rounded-3xl bg-surface border border-line p-8 flex flex-col shadow-2xl overflow-hidden"
         style={{ transform: "translateZ(30px)" }} // Push content outwards
       >
         {/* Dynamic glare effect reflecting mouse movement */}
         <motion.div 
-          className="absolute inset-0 pointer-events-none rounded-3xl bg-gradient-to-tr from-white to-transparent mix-blend-overlay"
+          className="absolute inset-0 pointer-events-none rounded-3xl bg-gradient-to-tr from-fg to-transparent mix-blend-overlay"
           style={{
             opacity: useTransform(() => Math.max(glareOpacity.get(), glareOpacityY.get())),
             backgroundPosition: `${glareX.get()} ${glareY.get()}`,
@@ -127,12 +127,12 @@ function HoverTiltCard({ card }: { card: any }) {
           }}
         />
 
-        <div className="p-4 bg-zinc-800/80 rounded-2xl w-max mb-6 border border-zinc-700/50">
+        <div className="p-4 bg-surface-2 rounded-2xl w-max mb-6 border border-line">
           {card.icon}
         </div>
         
-        <h3 className="text-xl font-bold text-zinc-100 mb-4">{card.title}</h3>
-        <p className="text-zinc-400 text-sm leading-relaxed">{card.description}</p>
+        <h3 className="text-xl font-semibold tracking-tight text-fg mb-4">{card.title}</h3>
+        <p className="text-muted text-sm leading-relaxed">{card.description}</p>
       </div>
     </motion.div>
   );

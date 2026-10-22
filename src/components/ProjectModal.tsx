@@ -33,7 +33,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[100] bg-black/80"
+            className="fixed inset-0 z-[100] bg-black/60"
           />
 
           {/* Modal Container */}
@@ -43,12 +43,12 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 16 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="pointer-events-auto relative flex max-h-[90vh] sm:max-h-[85vh] w-full max-w-5xl flex-col overflow-hidden rounded-[2rem] bg-zinc-950 shadow-[0_0_60px_rgba(0,0,0,0.8)] border border-white/10"
+              className="pointer-events-auto relative flex max-h-[90vh] sm:max-h-[85vh] w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-bg shadow-2xl border border-line"
             >
               {/* Close Button */}
               <button
                 onClick={onClose}
-                className="absolute right-4 top-4 sm:right-6 sm:top-6 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:scale-110"
+                className="absolute right-4 top-4 sm:right-6 sm:top-6 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-surface text-fg border border-line transition-all hover:bg-surface-2 hover:scale-110"
                 data-cursor-magnetic="true"
               >
                 <X size={20} />
@@ -59,34 +59,34 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 {/* Hero Header */}
                 <div className="relative h-[45vh] min-h-[300px] w-full shrink-0">
                   <div
-                    className="absolute inset-0 bg-gradient-to-br from-cyan-900/50 via-zinc-900 to-zinc-950 bg-cover bg-center"
+                    className="absolute inset-0 bg-gradient-to-br from-accent/15 via-surface to-bg bg-cover bg-center"
                     style={project.thumbnailUrl ? { backgroundImage: `url(${project.thumbnailUrl})` } : undefined}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/40 to-transparent" />
                   </div>
                   
                   <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 md:p-12">
                     <div className="mb-4 flex flex-wrap gap-2">
                       {project.tags.map(tag => (
-                        <span key={tag} className="rounded-full border border-cyan-500/30 bg-cyan-900/40 px-3 py-1 font-mono text-xs font-semibold text-cyan-300">
+                        <span key={tag} className="rounded-full border border-line bg-surface px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-wider text-muted">
                           {tag}
                         </span>
                       ))}
                     </div>
-                    <h2 className="text-4xl font-black text-white md:text-6xl tracking-tight leading-none">
+                    <h2 className="text-4xl font-semibold text-fg md:text-6xl tracking-tight leading-none">
                       {project.title}
                     </h2>
                   </div>
                 </div>
 
                 {/* Body Content */}
-                <div className="p-6 sm:p-8 md:p-12 lg:grid lg:grid-cols-3 lg:gap-16 bg-zinc-950">
+                <div className="p-6 sm:p-8 md:p-12 lg:grid lg:grid-cols-3 lg:gap-16 bg-bg">
                   <div className="col-span-2 space-y-12">
                     <section>
-                      <h3 className="mb-4 text-2xl font-bold text-white flex items-center gap-2">
-                         <Activity className="text-cyan-400" /> Overview
+                      <h3 className="mb-4 text-2xl font-semibold text-fg flex items-center gap-2">
+                         <Activity className="text-accent" /> Overview
                       </h3>
-                      <p className="text-lg leading-relaxed text-gray-300">
+                      <p className="text-lg leading-relaxed text-muted">
                         {project.description}
                       </p>
                     </section>
@@ -94,8 +94,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     {/* Interactive Features */}
                     {project.interactiveFeatures?.length > 0 && (
                       <section>
-                        <h3 className="mb-6 flex items-center gap-2 text-2xl font-bold text-white">
-                          <Code className="text-purple-400" /> Key Features & Interactions
+                        <h3 className="mb-6 flex items-center gap-2 text-2xl font-semibold text-fg">
+                          <Code className="text-accent" /> Key Features & Interactions
                         </h3>
                         <div className="grid gap-5 sm:grid-cols-2">
                           {project.interactiveFeatures.map((feat, i) => (
@@ -104,14 +104,13 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: 0.1 * i + 0.3, type: "spring", stiffness: 100 }}
                               key={i}
-                              className="group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-6 hover:bg-white/[0.04] transition-colors"
+                              className="group relative overflow-hidden rounded-2xl border border-line bg-surface p-6 hover:border-fg/25 transition-colors"
                             >
-                              <div className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-cyan-500/10 blur-xl transition-all group-hover:bg-cyan-500/20" />
-                              <h4 className="mb-3 font-semibold text-white flex items-start gap-3">
-                                <CheckCircle className="mt-0.5 shrink-0 text-cyan-400" size={18} />
+                                                            <h4 className="mb-3 font-semibold text-fg flex items-start gap-3">
+                                <CheckCircle className="mt-0.5 shrink-0 text-accent" size={18} />
                                 {feat.title}
                               </h4>
-                              <p className="text-sm leading-relaxed text-gray-400">{feat.description}</p>
+                              <p className="text-sm leading-relaxed text-muted">{feat.description}</p>
                             </motion.div>
                           ))}
                         </div>
@@ -122,22 +121,22 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   {/* Sidebar Info */}
                   <div className="mt-12 lg:mt-0 space-y-8">
                     {/* Role */}
-                    <section className="rounded-3xl border border-white/5 bg-white/[0.02] p-6">
-                      <h3 className="mb-3 text-xs font-bold uppercase tracking-widest text-cyan-500">My Role</h3>
-                      <p className="text-sm font-medium leading-relaxed text-gray-200">{project.myRole || 'Full-Stack Developer'}</p>
+                    <section className="rounded-3xl border border-line bg-surface p-6">
+                      <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">My Role</h3>
+                      <p className="text-sm font-medium leading-relaxed text-fg">{project.myRole || 'Full-Stack Developer'}</p>
                     </section>
 
                     {/* Collaborators */}
                     {project.collaborators && project.collaborators.length > 0 && (
-                      <section className="rounded-3xl border border-white/5 bg-white/[0.02] p-6">
-                        <h3 className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-purple-400">
+                      <section className="rounded-3xl border border-line bg-surface p-6">
+                        <h3 className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-accent">
                           <Users size={16} /> Collaborators
                         </h3>
                         <ul className="space-y-4">
                           {project.collaborators.map((collab, i) => (
                             <li key={i} className="flex flex-col gap-1">
-                              <span className="font-semibold text-white">{collab.name}</span>
-                              {collab.role && <span className="text-xs font-medium text-gray-400">{collab.role}</span>}
+                              <span className="font-semibold text-fg">{collab.name}</span>
+                              {collab.role && <span className="text-xs font-medium text-muted">{collab.role}</span>}
                             </li>
                           ))}
                         </ul>
@@ -145,19 +144,19 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     )}
 
                     {/* Links */}
-                    {project.links && project.links.length > 0 && (
+                    {project.links && project.links.some(l => l.url !== '#') && (
                       <section className="flex flex-col gap-4 pt-4">
-                        {project.links.map((link, i) => (
+                        {project.links.filter(l => l.url !== '#').map((link, i) => (
                           <a
                             key={i}
                             href={link.url}
                             target="_blank"
                             rel="noopener noreferrer"
                             data-cursor-magnetic="true"
-                            className={`flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-extrabold transition-all duration-300 hover:scale-105 ${
+                            className={`flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-semibold transition-all duration-300 hover:opacity-85 ${
                               link.type === 'github'
-                                ? 'bg-white text-black hover:bg-gray-200'
-                                : 'bg-gradient-to-r from-cyan-400 to-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)]'
+                                ? 'border border-line bg-surface text-fg hover:bg-surface-2'
+                                : 'bg-fg text-bg'
                             }`}
                           >
                             {link.type === 'github' ? <Code size={20} /> : <ExternalLink size={20} />}

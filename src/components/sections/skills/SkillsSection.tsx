@@ -2,10 +2,12 @@
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Box, LayoutGrid, Move3d } from "lucide-react";
+import SkillSphere, { SkillItem } from "@/components/3d/SkillSphere";
 
 const categories = ["All", "Web Dev", "ML & NLP", "Computer Vision", "Automation"];
 
-const skillsData = [
+const skillsData: SkillItem[] = [
   // Web Dev
   { id: "s1", name: "Next.js", category: "Web Dev" },
   { id: "s2", name: "React", category: "Web Dev" },
@@ -37,8 +39,11 @@ const skillsData = [
   { id: "s25", name: "Mendix", category: "Automation" },
 ];
 
+type View = "3d" | "grid";
+
 export default function SkillsSection() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [view, setView] = useState<View>("3d");
   const containerRef = useRef<HTMLDivElement>(null);
 
   const filteredSkills = skillsData.filter(
@@ -46,74 +51,110 @@ export default function SkillsSection() {
   );
 
   return (
-    <section 
-      id="skills" 
-      className="relative w-full min-h-screen bg-black flex flex-col items-center py-24 overflow-hidden isolate"
+    <section
+      id="skills"
+      className="relative flex w-full flex-col items-center overflow-hidden bg-bg px-4 py-28 isolate"
       ref={containerRef}
     >
-      {/* Background ambient lighting */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none"
-        style={{ background: "radial-gradient(closest-side, rgba(30,58,138,0.22), transparent)" }}
-      />
-
       {/* Header */}
-      <motion.div 
-        className="text-center mb-12 z-10"
-        initial={{ opacity: 0, y: -20 }}
+      <motion.div
+        className="z-10 mb-10 text-center"
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
       >
-        <h2 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-4">Technical Skills</h2>
-        <p className="text-zinc-500 max-w-xl mx-auto px-4">
-          An interactive technology ecosystem. Drag, drop, and explore the tools that power my projects.
+        <p className="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-subtle">Toolkit</p>
+        <h2 className="mb-4 text-4xl font-semibold tracking-tight text-fg md:text-5xl">Technical Skills</h2>
+        <p className="mx-auto max-w-xl text-muted">
+          {view === "3d"
+            ? "Drag the sphere to spin it a full 360° and explore the tools behind my projects."
+            : "Drag, drop, and explore the tools behind my projects."}
         </p>
       </motion.div>
 
-      {/* Category Tabs */}
-      <div className="flex flex-wrap justify-center gap-3 mb-16 z-20 px-4">
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => setActiveCategory(category)}
-            className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-colors duration-300 ${
-              activeCategory === category ? "text-white" : "text-zinc-400 hover:text-zinc-200"
-            }`}
-          >
-            {activeCategory === category && (
-              <motion.div
-                layoutId="activeTabBadge"
-                className="absolute inset-0 bg-blue-600/30 border border-blue-500/50 rounded-full"
-                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-              />
-            )}
-            <span className="relative z-10">{category}</span>
-          </button>
-        ))}
+      {/* Controls */}
+      <div className="z-20 mb-8 flex flex-col items-center gap-5">
+        <div className="flex flex-wrap justify-center gap-2">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`relative rounded-full px-4 py-2 text-sm transition-colors duration-300 ${
+                activeCategory === category ? "text-bg" : "text-muted hover:text-fg"
+              }`}
+            >
+              {activeCategory === category && (
+                <motion.div
+                  layoutId="activeSkillTab"
+                  className="absolute inset-0 rounded-full bg-fg"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                />
+              )}
+              <span className="relative z-10">{category}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center rounded-full border border-line p-1 text-xs">
+          {(
+            [
+              { id: "3d", label: "3D Sphere", icon: <Box size={13} /> },
+              { id: "grid", label: "Grid", icon: <LayoutGrid size={13} /> },
+            ] as const
+          ).map((option) => (
+            <button
+              key={option.id}
+              onClick={() => setView(option.id)}
+              className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 transition-colors ${
+                view === option.id ? "bg-surface-2 text-fg" : "text-muted hover:text-fg"
+              }`}
+            >
+              {option.icon}
+              {option.label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Draggable Badge Constellation */}
-      <div className="relative w-full max-w-6xl mx-auto flex-1 px-8">
-        <ul className="flex flex-wrap justify-center gap-6 md:gap-8 items-center h-full align-center pt-8">
-          <AnimatePresence mode="popLayout">
-            {filteredSkills.map((skill, index) => (
-              <DraggableBadge 
-                key={skill.id} 
-                skill={skill} 
-                parentRef={containerRef} 
-                index={index} 
-              />
-            ))}
-          </AnimatePresence>
-        </ul>
+      {/* Content. The sphere stays mounted (just hidden) in Grid view: it stops rendering
+          while hidden, and re-creating a WebGL canvas on every toggle is wasteful. */}
+      <div className={`relative z-10 w-full max-w-3xl ${view === "3d" ? "" : "hidden"}`}>
+        <SkillSphere
+          skills={skillsData}
+          activeCategory={activeCategory}
+          className="h-[460px] w-full cursor-grab active:cursor-grabbing md:h-[560px]"
+        />
+        <p className="pointer-events-none mt-2 flex items-center justify-center gap-2 text-xs text-subtle">
+          <Move3d size={14} /> Click and drag to rotate
+        </p>
       </div>
 
+      {view === "grid" && (
+        <div className="relative z-10 mx-auto w-full max-w-5xl flex-1 px-4">
+          <ul className="flex flex-wrap items-center justify-center gap-4 pt-4 md:gap-6">
+            <AnimatePresence mode="popLayout">
+              {filteredSkills.map((skill, index) => (
+                <DraggableBadge key={skill.id} skill={skill} parentRef={containerRef} index={index} />
+              ))}
+            </AnimatePresence>
+          </ul>
+        </div>
+      )}
     </section>
   );
 }
 
-// Sub-component for individual floating badges
-function DraggableBadge({ skill, parentRef, index }: { skill: any, parentRef: React.RefObject<HTMLDivElement | null>, index: number }) {
+// Individual draggable badge for the grid view
+function DraggableBadge({
+  skill,
+  parentRef,
+  index,
+}: {
+  skill: SkillItem;
+  parentRef: React.RefObject<HTMLDivElement | null>;
+  index: number;
+}) {
   // Stagger the CSS float animation so the badges don't move in sync
   const floatDelay = (index % 5) * 0.4;
   const floatDuration = 3 + (index % 3);
@@ -121,36 +162,23 @@ function DraggableBadge({ skill, parentRef, index }: { skill: any, parentRef: Re
   return (
     <motion.li
       layout
-      initial={{ opacity: 0, scale: 0.4 }}
+      initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.4, transition: { duration: 0.2 } }}
+      exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
       transition={{ layout: { type: "spring", stiffness: 300, damping: 25 } }}
       className="relative z-10 flex cursor-grab active:cursor-grabbing"
-      
-      // Draggable physics
       drag
       dragConstraints={parentRef}
       dragElastic={0.4}
       dragTransition={{ bounceStiffness: 400, bounceDamping: 20 }}
-      
-      whileHover={{ 
-        scale: 1.15, 
-        zIndex: 50,
-        transition: { duration: 0.2 }
-      }}
-      whileDrag={{ 
-        scale: 1.25, 
-        zIndex: 100, 
-        cursor: "grabbing",
-        boxShadow: "0 0 40px rgba(0, 195, 255, 0.4)",
-      }}
+      whileHover={{ scale: 1.1, zIndex: 50, transition: { duration: 0.2 } }}
+      whileDrag={{ scale: 1.18, zIndex: 100 }}
     >
-      {/* Container that handles the floating animation separate from the drag physics */}
       <div
         style={{ animationDuration: `${floatDuration}s`, animationDelay: `${floatDelay}s` }}
-        className="float-y px-6 py-4 rounded-2xl bg-zinc-900 border border-white/10 shadow-lg flex items-center justify-center group transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] hover:border-blue-500/50 hover:bg-zinc-800"
+        className="float-y group flex items-center justify-center rounded-2xl border border-line bg-surface px-5 py-3 shadow-sm transition-colors duration-300 hover:border-accent/50"
       >
-        <span className="text-zinc-200 font-medium whitespace-nowrap group-hover:text-white transition-colors">
+        <span className="whitespace-nowrap text-sm font-medium text-muted transition-colors group-hover:text-fg">
           {skill.name}
         </span>
       </div>
