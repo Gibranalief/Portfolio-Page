@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Briefcase, Camera, Check, Code, Copy, Download, Mail, MapPin } from "lucide-react";
 import ContactScene from "@/components/3d/ContactScene";
+import RevealText from "@/components/ui/RevealText";
 
 const EMAIL = "gbrnalief@gmail.com";
 
@@ -60,7 +61,7 @@ export default function ContactSection() {
         >
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-subtle">Contact</p>
           <h2 className="mb-5 text-4xl font-semibold tracking-tight text-fg md:text-6xl">
-            Let&apos;s work <span className="text-accent">together.</span>
+            <RevealText text="Let's work" /> <RevealText text="together." className="text-accent" delay={0.15} />
           </h2>
           <p className="mb-8 max-w-md text-lg leading-relaxed text-muted">
             Open to internships and collaborations in AI and software engineering. Send me a message and I&apos;ll get back to you.
@@ -135,6 +136,10 @@ export default function ContactSection() {
       </div>
 
       <footer className="relative mx-auto mt-20 max-w-6xl border-t border-line pt-6 text-center text-xs text-subtle">
+        <a href="#home" className="mb-3 inline-block text-muted transition-colors hover:text-fg">
+          Back to top
+        </a>
+        <br />
         © {new Date().getFullYear()} Gibran Alief Irawan. Built with Next.js, Three.js, and Framer Motion.
       </footer>
     </section>

@@ -1,11 +1,19 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { MouseEvent, useRef } from "react";
 import Image from "next/image";
+import RevealText from "@/components/ui/RevealText";
 
 export default function AnimatedIntro() {
   const cardRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+
+  // Reveal device: the photo is wiped in from the bottom edge as it scrolls into view
+  const { scrollYProgress: wipe } = useScroll({ target: stageRef, offset: ["start 92%", "start 45%"] });
+  const clip = useTransform(wipe, [0, 1], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)"]);
+  const imageScale = useTransform(wipe, [0, 1], [1.2, 1]);
 
   // Pointer position over the photo card, normalized to -0.5..0.5. Motion values
   // update the DOM directly, so tilting never re-renders React.
@@ -42,7 +50,9 @@ export default function AnimatedIntro() {
           <span className="h-px w-8 bg-subtle" />
           About
         </p>
-        <h2 className="mb-6 text-4xl font-semibold tracking-tight text-fg md:text-5xl">Hello, world.</h2>
+        <h2 className="mb-6 text-4xl font-semibold tracking-tight text-fg md:text-5xl">
+          <RevealText text="Hello, world." />
+        </h2>
 
         <p className="mb-5 text-lg leading-relaxed text-muted md:text-xl">
           I am a <span className="font-medium text-fg">Computer Science student at BINUS University</span> with a deep passion for software engineering and artificial intelligence.
@@ -62,6 +72,7 @@ export default function AnimatedIntro() {
         transition={{ duration: 0.8, delay: 0.15 }}
         style={{ perspective: 1000 }}
       >
+        <div ref={stageRef}>
         <motion.div
           ref={cardRef}
           onMouseMove={onMove}
@@ -75,7 +86,11 @@ export default function AnimatedIntro() {
             style={{ transform: "translateZ(-30px) translate(16px, 16px)" }}
           />
 
-          <div className="relative h-full w-full overflow-hidden rounded-3xl border border-line bg-surface shadow-xl">
+          <motion.div
+            className="relative h-full w-full overflow-hidden rounded-3xl border border-line bg-surface shadow-xl"
+            style={reduced ? undefined : { clipPath: clip }}
+          >
+            <motion.div className="absolute inset-0" style={reduced ? undefined : { scale: imageScale }}>
             <Image
               src="/profile.png"
               alt="Gibran Alief Irawan"
@@ -84,6 +99,7 @@ export default function AnimatedIntro() {
               className="object-cover"
               priority
             />
+            </motion.div>
             <motion.div
               className="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay"
               style={{
@@ -96,8 +112,9 @@ export default function AnimatedIntro() {
               <h3 className="text-lg font-semibold text-white">Gibran Alief Irawan</h3>
               <p className="text-sm text-white/70">Computer Science · BINUS University</p>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
+        </div>
       </motion.div>
     </div>
   );

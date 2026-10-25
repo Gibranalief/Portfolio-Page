@@ -1,11 +1,13 @@
 "use client";
 
-import { MutableRefObject, useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { MutableRefObject, useEffect, useMemo, useRef } from "react";
+import type { MotionValue } from "framer-motion";
+import { useFrame, useThree } from "@react-three/fiber";
 import { TrackballControls } from "@react-three/drei";
 import * as THREE from "three";
 import ViewportCanvas from "./ViewportCanvas";
 import { threeColors, useThemeStore } from "@/store/useThemeStore";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export interface SkillItem {
   id: string;
@@ -34,11 +36,15 @@ function Cloud({
   activeCategory,
   autoRotate,
   labelRefs,
+  progress,
+  interactive,
 }: {
   skills: SkillItem[];
   activeCategory: string;
   autoRotate: boolean;
   labelRefs: LabelRefs;
+  progress?: MotionValue<number>;
+  interactive: boolean;
 }) {
   const theme = useThemeStore((s) => s.theme);
   const colors = threeColors[theme];
@@ -46,13 +52,24 @@ function Cloud({
   const points = useMemo(() => spherePoints(skills.length), [skills.length]);
   const scratch = useMemo(() => new THREE.Vector3(), []);
 
-  const near = CAMERA_DISTANCE - RADIUS;
-  const far = CAMERA_DISTANCE + RADIUS;
+  // On tall, narrow canvases (phones) pull the camera back so the sphere fits the width
+  const camera = useThree((state) => state.camera);
+  const width = useThree((state) => state.size.width);
+  const height = useThree((state) => state.size.height);
+  useEffect(() => {
+    const aspect = width / Math.max(height, 1);
+    camera.position.setLength(aspect < 0.86 ? CAMERA_DISTANCE * Math.min(1.9, 0.86 / aspect) : CAMERA_DISTANCE);
+  }, [camera, width, height]);
 
   useFrame(({ camera, size }, delta) => {
     const g = group.current;
     if (!g) return;
-    if (autoRotate) g.rotation.y += delta * 0.12;
+    if (progress) {
+      // Scroll is the spindle: one full turn across the whole pinned travel
+      g.rotation.y = THREE.MathUtils.lerp(g.rotation.y, progress.get() * Math.PI * 2, 0.1);
+    } else if (autoRotate) {
+      g.rotation.y += delta * 0.12;
+    }
     g.updateWorldMatrix(true, false);
 
     // Labels are plain DOM (one overlay div) instead of one React root per label.
@@ -62,6 +79,9 @@ function Cloud({
       if (!el) return;
 
       scratch.copy(points[i]).applyMatrix4(g.matrixWorld);
+      const dist = camera.position.length();
+      const near = dist - RADIUS;
+      const far = dist + RADIUS;
       const depth = THREE.MathUtils.clamp((far - camera.position.distanceTo(scratch)) / (far - near), 0, 1);
       scratch.project(camera);
 
@@ -90,8 +110,9 @@ function Cloud({
         </mesh>
       </group>
 
-      {/* Trackball (not Orbit) so the sphere can be spun a full 360° on every axis */}
-      <TrackballControls noZoom noPan rotateSpeed={2.2} dynamicDampingFactor={0.08} />
+      {/* Trackball (not Orbit) so the sphere can be spun a full 360° on every axis.
+          Skipped on touch devices: it locks touch scrolling, which would trap the page. */}
+      {interactive && <TrackballControls noZoom noPan rotateSpeed={2.2} dynamicDampingFactor={0.08} />}
     </>
   );
 }
@@ -100,11 +121,15 @@ export default function SkillSphere({
   skills,
   activeCategory,
   className = "",
+  progress,
 }: {
   skills: SkillItem[];
   activeCategory: string;
   className?: string;
+  /** Scroll progress (0..1). When given, scroll spins the sphere instead of the idle rotation. */
+  progress?: MotionValue<number>;
 }) {
+  const interactive = useMediaQuery("(hover: hover) and (pointer: fine)");
   const labelRefs: LabelRefs = useRef([]);
   const reducedMotion =
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -119,7 +144,7 @@ export default function SkillSphere({
           }}
           // Starts hidden; Cloud's frame loop positions and reveals it
           style={{ opacity: 0 }}
-          className="absolute left-0 top-0 select-none whitespace-nowrap rounded-full border border-line bg-surface px-3.5 py-1.5 text-xs font-medium text-fg shadow-sm transition-opacity duration-300 will-change-transform"
+          className="absolute left-0 top-0 select-none whitespace-nowrap rounded-full border border-line bg-bg px-3.5 py-1.5 text-xs font-medium text-fg shadow-sm transition-opacity duration-300 will-change-transform"
         >
           {skill.name}
         </div>
@@ -139,6 +164,8 @@ export default function SkillSphere({
         activeCategory={activeCategory}
         autoRotate={!reducedMotion}
         labelRefs={labelRefs}
+        progress={progress}
+        interactive={interactive}
       />
     </ViewportCanvas>
   );

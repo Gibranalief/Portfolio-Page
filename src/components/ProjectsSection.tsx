@@ -76,14 +76,14 @@ export default function ProjectsSection() {
         {/* Uniform grid: every card is the same size, and an incomplete last row is centered */}
         <div className="flex flex-wrap justify-center gap-6">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, idx) => (
               <motion.div
                 key={project.id}
                 layout="position"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
+                transition={{ duration: 0.45, ease: 'easeOut', delay: (idx % 3) * 0.08 }}
                 className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
               >
                 <ProjectCard
